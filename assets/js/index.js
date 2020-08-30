@@ -70,7 +70,7 @@ list.addNode("test1");
 list.addNode("test2");
 list.addNode("test3");
 
-
+//LIFO - 
 class Stack {
   constructor(maxSize = 1000){
 
@@ -150,4 +150,63 @@ function checkBraces(string) {
       }
   } 
   
+}
+
+//FIFO -
+
+class Queue {
+  constructor(...rest){
+    this._oldIndex = 0;
+    this._newIndex = 0;
+
+    for (const item of rest) {
+      this.push(item)
+    }
+  }
+  get size(){
+      return this._newIndex - this._oldIndex;
+  }
+  push(...rest) {
+   
+    for (const item of rest) {
+      this[this._newIndex++] = item;
+    }
+    return this.size;
+  }
+
+  pop() {
+    if (this.size === 0) {
+      return;
+    }
+    const buffer = this[this._oldIndex];
+    delete this[this._oldIndex++];
+    return buffer;
+  }
+
+  peek() {
+    return this[this._oldIndex];
+  }
+}
+
+let q1 = new Queue("Test1", "Test2", "Test3", "Test4");
+q1.push("Test5", "Test6");
+let q2 = new Queue("Test7", "Test8", "Test9", "Test10");
+q2.push("Test11", "Test12");
+
+function getQueues(que1, que2,...rest) {
+  
+  const result = new Queue();
+  while (que1.size || que2.size) {
+    result.push(que1.pop());
+    
+  }
+  for (const item of rest) {
+    for (let i = 0; i < item.size; i++) {
+      result.push(item[item._oldIndex]);
+      item.pop();
+    }
+  
+  }
+  return result;
+
 }
